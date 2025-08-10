@@ -2,15 +2,45 @@
 
 namespace PongGame.util;
 
-public class PongBall : Label
+public class PongBall : Label, IRectangular
 {
     private static readonly int s_size = 15;
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public int X
+    {
+        get { return Location.X; }
+    }
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public int Y
+    {
+        get { return Location.Y; }
+    }
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public int Width
+    {
+        get { return Size.Width; }
+    }
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public int Height
+    {
+        get { return Size.Height; }
+    }
     
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public RectangularBoard Board { get; private set; }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public Vector2Int Velocity { get; private set; }
+
+    public bool IsAlive
+    {
+        get;
+        private set;
+    }
 
     public int West
     {
@@ -31,6 +61,12 @@ public class PongBall : Label
     {
         get { return Location.Y + Size.Height; }
     }
+
+    public PongGameEngine Master
+    {
+        get;
+        private set;
+    }
     
     public PongBall(int startX, int startY, Vector2Int startVelocity, RectangularBoard board, PongGameEngine master) : base()
     {
@@ -39,8 +75,10 @@ public class PongBall : Label
         BackColor = Color.White;
         Board = board;
         Velocity = startVelocity;
+        Master = master;
+        IsAlive = true;
         
-        master.Controls.Add(this);
+        Master.Controls.Add(this);
     }
 
     public void Update()
@@ -57,7 +95,7 @@ public class PongBall : Label
 
     public CardinalDirection[] HitDirections()
     {
-        List<CardinalDirection> directions = new List<CardinalDirection>();
+        HashSet<CardinalDirection> directions = new HashSet<CardinalDirection>();
         int newWest = West + Velocity.X;
         int newNorth = North + Velocity.Y;
         int newEast = East + Velocity.X;
@@ -98,5 +136,10 @@ public class PongBall : Label
     public void SpeedUp(int coefficient)
     {
         Velocity.Scale(coefficient);
+    }
+
+    public void Kill()
+    {
+        IsAlive = false;
     }
 }

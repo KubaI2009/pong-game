@@ -5,6 +5,8 @@ namespace PongGame;
 
 partial class PongGameEngine
 {
+    private long _ticks;
+    
     public int FormWidth
     {
         get;
@@ -42,6 +44,18 @@ partial class PongGameEngine
     }
 
     public int LabelHeight
+    {
+        get;
+        private set;
+    }
+
+    public int DeathZoneWidth
+    {
+        get;
+        private set;
+    }
+
+    public int RacketWidth
     {
         get;
         private set;
@@ -131,12 +145,27 @@ partial class PongGameEngine
     {
         GameLoop = new System.Timers.Timer();
         GameLoop.Interval = 1;
-        GameLoop.Elapsed += (sender, args) => Update();
+        GameLoop.Elapsed += UpdateEvent;
         GameLoop.Start();
+    }
+
+    private void KillGameLoop()
+    {
+        GameLoop.Elapsed -= UpdateEvent;
+        GameLoop.Stop();
     }
 
     private void Update()
     {
+        _ticks++;
+        
         Ball.Update();
+
+        if (!Ball.IsAlive)
+        {
+            KillGameLoop();
+        }
     }
+
+    private void UpdateEvent(object? sender, EventArgs e) => Update();
 }

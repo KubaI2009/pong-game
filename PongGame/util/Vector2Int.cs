@@ -5,20 +5,21 @@ public class Vector2Int(int x, int y)
     public int X { get; set; } = x;
     public int Y { get; set; } = y;
 
+    public void SwapCoordinates()
+    {
+        (X, Y) = (Y, X);
+    }
+
     public void RotateClockwise()
     {
-        int t = X;
-        
-        X = Y;
-        Y = -t;
+        SwapCoordinates();
+        EntrywiseMultiply(1, -1);
     }
 
     public void RotateCounterClockwise()
     {
-        int t = X;
-        
-        X = -Y;
-        Y = t;
+        SwapCoordinates();
+        EntrywiseMultiply(-1, 1);
     }
 
     public void TurnAround()
@@ -33,8 +34,13 @@ public class Vector2Int(int x, int y)
 
     public void Add(Vector2Int other)
     {
-        X += other.X;
-        Y += other.Y;
+        Add(other.X, other.Y);
+    }
+
+    public void Add(int x, int y)
+    {
+        X += x;
+        Y += y;
     }
 
     public void Scale(int coefficient)
@@ -45,8 +51,13 @@ public class Vector2Int(int x, int y)
 
     public void EntrywiseMultiply(Vector2Int other)
     {
-        X *= other.X;
-        Y *= other.Y;
+        EntrywiseMultiply(other.X, other.Y);
+    }
+
+    public void EntrywiseMultiply(int x, int y)
+    {
+        X *= x;
+        Y *= y;
     }
 
     public static Vector2Int Sum(Vector2Int v, Vector2Int u)
