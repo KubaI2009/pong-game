@@ -4,12 +4,13 @@ public partial class PongGameEngine : Form
 {
     public PongGameEngine()
     {
-        FormWidth = 500;
-        FormHeight = 600;
         BoardX = 0;
         BoardY = 0;
-        BoardWidth = FormWidth - 2 * BoardX;
-        BoardHeight = FormHeight - 2 * BoardY - 250;
+        BoardWidth = 400;
+        BoardHeight = 300;
+        LabelHeight = 0;
+        FormWidth = BoardWidth + 2 * BoardX;
+        FormHeight = BoardHeight + 2 * BoardY + LabelHeight;
         
         InitializeComponent();
         Customize();

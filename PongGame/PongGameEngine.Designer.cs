@@ -1,4 +1,5 @@
 ﻿using PongGame.util;
+using Timer = System.Threading.Timer;
 
 namespace PongGame;
 
@@ -39,8 +40,26 @@ partial class PongGameEngine
         get;
         private set;
     }
+
+    public int LabelHeight
+    {
+        get;
+        private set;
+    }
+
+    public System.Timers.Timer GameLoop
+    {
+        get;
+        private set;
+    }
     
     public RectangularBoard Board
+    {
+        get;
+        private set;
+    }
+
+    public PongBall Ball
     {
         get;
         private set;
@@ -95,11 +114,29 @@ partial class PongGameEngine
         //basic customization
         ClientSize = new System.Drawing.Size(FormWidth, FormHeight);
         Text = "Pong Game";
-        BackColor = Color.Gray;
+        BackColor = Color.Black;
         
         //board initialization
         Board = new RectangularBoard(BoardX, BoardY, BoardWidth, BoardHeight, this);
         
+        //pong ball initialization
+        Ball = new PongBall(BoardX, BoardY + BoardHeight / 2, new Vector2Int(1, 1), Board, this);
+        
+        InitializeGameLoop();
+        
         ResumeLayout(false);
+    }
+
+    private void InitializeGameLoop()
+    {
+        GameLoop = new System.Timers.Timer();
+        GameLoop.Interval = 1;
+        GameLoop.Elapsed += (sender, args) => Update();
+        GameLoop.Start();
+    }
+
+    private void Update()
+    {
+        Ball.Update();
     }
 }

@@ -2,8 +2,6 @@
 
 public class RectangularBoard : IRectangular
 {
-    private RenderedRectangularBoard _renderedBoard;
-    
     public int X { get; set; }
     public int Y { get; set; }
     public int Width { get; set; }
@@ -17,8 +15,5 @@ public class RectangularBoard : IRectangular
         Width = width;
         Height = height;
         Master = master;
-        _renderedBoard = new RenderedRectangularBoard(X, Y, Width, Height);
-        
-        Master.Controls.Add(_renderedBoard);
     }
 }
